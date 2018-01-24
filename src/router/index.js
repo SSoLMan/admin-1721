@@ -14,12 +14,31 @@ export default new Router({
       // 子路由配置
       children:[
         {
-          path:"",component:Home
+          path:"home",component:Home
         },
         {
-          path:"product",component:Product
-        }
+          path:"product_add",component:Product
+        },
+        {
+          path:"product_list",component:{
+            render(h){ return h("div",null,"product_list")}
+          }
+        },
+        {
+          path:"cate_add",component:{
+            template:"<div>cate_add</div>"
+          }
+        },
+        {
+          path:"cate_list",component:{
+            render(h){ return <div>cate_list</div>}
+          }
+        },
       ]
+    },{
+      // 路由 路径输入错，去默认的页面（路由重定向）
+      path:"*",
+      redirect:"/home"
     }
   ]
 })
