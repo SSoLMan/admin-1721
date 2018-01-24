@@ -1,6 +1,5 @@
 <template>
-  <div class="">
-   
+  <div class=""> 
         <el-menu
           :default-active="activeIndex"
           class="el-menu-vertical-demo"
@@ -9,7 +8,7 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-          <el-menu-item index="/home">
+          <el-menu-item index="/">
             <i class="el-icon-menu"></i>
             <span slot="title">Home</span>
           </el-menu-item>
@@ -18,8 +17,8 @@
               <i class="el-icon-goods"></i>
               <span>商品管理</span>
             </template>
-              <el-menu-item index="/product_add">添加商品</el-menu-item>
-              <el-menu-item index="/product_list">管理商品</el-menu-item>
+              <el-menu-item index="/product/add">添加商品</el-menu-item>
+              <el-menu-item index="/product/list">管理商品</el-menu-item>
           </el-submenu>
 
            <el-submenu index="cate">
@@ -27,8 +26,8 @@
                 <i class="el-icon-document"></i>
                 <span>分类管理</span>
               </template>
-                <el-menu-item index="/cate_add">添加分类</el-menu-item>
-                <el-menu-item index="/cate_list">管理分类</el-menu-item>
+                <el-menu-item index="/cate/add">添加分类</el-menu-item>
+                <el-menu-item index="/cate/list">管理分类</el-menu-item>
             </el-submenu>
 
              <el-submenu index="order">
@@ -36,8 +35,8 @@
                 <i class="el-icon-tickets"></i>
                 <span>订单管理</span>
               </template>
-                <el-menu-item index="/order_list">管理订单</el-menu-item>
-                <el-menu-item index="/order_tui">
+                <el-menu-item index="/order/list">管理订单</el-menu-item>
+                <el-menu-item index="/order/tui">
                    <i class="el-icon-menu"></i>
                    <span slot="title">退换货</span>
                 </el-menu-item>
@@ -57,7 +56,7 @@ export default {
   },
   methods: {
     handleSelect(index,indexPath){
-      //console.log(index,indexPath); //indexPath:[父级的index,自己的index]
+      console.log(index,indexPath); //indexPath:[父级的index,自己的index]
       //编程式路由跳转
      // this.$router.push({ path: index, query: { plan: 'private' }})//,params:{}
     }

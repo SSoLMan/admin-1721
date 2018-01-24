@@ -50,4 +50,22 @@ this.$router.push("/home")
 this.$router.push({ path: "/home", query: { plan: 'private' }}) //,params:{} params是路由传参（detail:/id）
 
 
+8、多级路由 需要使用 router-view嵌套
+
+9、组件的异步加载   import Product from "xxx"   变成   ()=>import("xxx")  可以webpack文件打包过大的问题
+
+10、el-form相关组件 
+以及el-upload    
+action : 图片上传的地址 
+name: 上传图片的字段名
+:on-success="handleAvatarSuccess" 上传成功回调 
+
+handleAvatarSuccess(res, file) {
+    console.log(res,file,)
+    //图片上传成功，保存图片的服务器地址
+    this.cateData.catePic = "http://localhost:8000"+res.imgSrc.replace("public","")
+}, 
+
+
+
 
