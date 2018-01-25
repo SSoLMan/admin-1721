@@ -17,7 +17,7 @@
               <i class="el-icon-goods"></i>
               <span>商品管理</span>
             </template>
-              <el-menu-item index="/product/add">添加商品</el-menu-item>
+              <el-menu-item index="/product/new">新品上架</el-menu-item>
               <el-menu-item index="/product/list">管理商品</el-menu-item>
           </el-submenu>
 

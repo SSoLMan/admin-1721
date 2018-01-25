@@ -23,7 +23,7 @@ export default new Router({
           component:{template:`<router-view></router-view>`},
           children:[
             {
-              path:"add",component:{render(h){return h("div",null,'add add add')}}
+              path:"new",component:{render(h){return h("div",null,'add add add')}}
             },
             {
               path:"list",component:()=>import("@/modules/Product")
@@ -39,7 +39,7 @@ export default new Router({
               path:"add",component:()=>import("@/modules/Category/Add")
             },
             {
-              path:"list",component:{render(h){return h("div",null,'cate list list')}}
+              path:"list",component:()=>import("@/modules/Category/List")
             }
           ]
          

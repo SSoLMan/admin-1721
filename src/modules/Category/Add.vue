@@ -2,7 +2,7 @@
   <div>
     <el-form  status-icon  ref="ruleForm2" label-width="100px" class="demo-ruleForm">
       <el-form-item label="分类名称">
-        <el-input type="text" v-model="cateData.cate_name"></el-input>
+        <el-input type="text" v-model="cateData.cate_name" class="cate-item"></el-input>
       </el-form-item>
 
       <el-form-item label="选择父类">
@@ -92,3 +92,8 @@ import qs from "qs"
     }
   }
 </script>
+
+<style>
+.el-form-item__content { text-align: left}
+.cate-item { width: 200px;}
+</style>
