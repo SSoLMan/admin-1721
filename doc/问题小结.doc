@@ -66,6 +66,17 @@ handleAvatarSuccess(res, file) {
     this.cateData.catePic = "http://localhost:8000"+res.imgSrc.replace("public","")
 }, 
 
+11、el-table,el-pagination 分页
+分页插件
+:page-count="totalPage" //总页数
+@current-change="currentChange" //点击按钮，上一页，下一页，改变页面时触发 
+currentChange（currentPage）{
+   this.$store.commit("product/changePageNum",{currentPage}) //先提交 修改页码的请求
+   
+   this.getListData() //修改完页码再获取数据（不用关注页码的问题）
+}
+
+
 
 
 
