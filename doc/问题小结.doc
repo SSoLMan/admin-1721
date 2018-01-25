@@ -76,6 +76,10 @@ currentChange（currentPage）{
    this.getListData() //修改完页码再获取数据（不用关注页码的问题）
 }
 
+12、分类，关键字搜索  （一级，二级分类联动效果 <=>省市区三联动）
+el-select 
+@change="fn"   : fn(value) //当选中值发生改变的时候出发
+watch 监听某个值的 改变
 
 
 

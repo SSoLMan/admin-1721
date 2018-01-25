@@ -23,7 +23,7 @@ export default new Router({
           component:{template:`<router-view></router-view>`},
           children:[
             {
-              path:"new",component:{render(h){return h("div",null,'add add add')}}
+              path:"new",component:()=>import("@/modules/Product/Add")
             },
             {
               path:"list",component:()=>import("@/modules/Product")
