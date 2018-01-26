@@ -81,6 +81,36 @@ el-select
 @change="fn"   : fn(value) //当选中值发生改变的时候出发
 watch 监听某个值的 改变
 
+13、多图上传 （上传成功，保存图片地址）
+
+14富文本编辑器 vue2-editor
+
+自定义图片上传
+ handleImageAdded(file, Editor, cursorLocation) {
+        // An example of using FormData
+        // NOTE: Your key could be different such as:
+        // formData.append('file', file)
+        var formData = new FormData();//formData对象 （是formData对象传递文件数据）
+        formData.append('roompic', file) //添加一个字段和， 值（图片）
+
+        this.axios({
+          url: 'http://localhost:8000/api/uploadImg',
+          method: 'POST',
+          data: formData
+        })
+        .then((res) => {
+          //富文本编辑器上传图片成功
+
+          // Get url from response
+          let url = "http://localhost:8000"+res.data.imgSrc.replace("public","") 
+          console.log(url)
+          Editor.insertEmbed(cursorLocation, 'image', url); //给文本编辑器里面插入图片
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      }
+15、把数据提交给后端 qs axio(method:post)
 
 
 

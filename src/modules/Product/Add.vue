@@ -8,7 +8,7 @@
        <el-form-item label="价格">
          <el-input v-model="productData.price" ></el-input>
       </el-form-item> 
-       <el-form-item label="数据">
+       <el-form-item label="数量">
          <el-input v-model="productData.total_number" ></el-input>
       </el-form-item> 
       <el-form-item label="选择一级分类">
@@ -32,20 +32,29 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item>
 
-      <!-- <el-form-item>
-      
         <el-upload
-          class="avatar-uploader"
           action="http://localhost:8000/api/uploadImg"
-          :show-file-list="false"
+          list-type="picture-card"
           name="roompic"
+          :on-preview="handlePictureCardPreview"
+          :on-remove="handleRemove"
           :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          >
+          <i class="el-icon-plus"></i>
         </el-upload>
-      </el-form-item>   -->
+        <el-dialog :visible.sync="dialogVisible" size="tiny">
+          <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
+
+      </el-form-item>
+      <el-form-item>
+        <vue-editor v-model="productData.desc"
+         useCustomImageHandler
+         @imageAdded="handleImageAdded" 
+        ></vue-editor>
+      </el-form-item>
 
 
       <el-form-item>
@@ -58,6 +67,7 @@
 </template>
 
 <script>
+import {VueEditor} from "vue2-editor"
 import qs from "qs"
   export default {
     data(){
@@ -65,13 +75,17 @@ import qs from "qs"
         productData:{
           p_name:"",
           price:"",
-          total_number:0,
+          total_number:"",
           parent_id:"",
-          cate_id:""
-          
+          cate_id:"",
+          img_url:"",
+          img_list:[],
+          desc:""
         },
         cateData:[],
-        cateChildrenData:[]
+        cateChildrenData:[],
+        dialogImageUrl: '',
+        dialogVisible: false
       }
     },
     methods:{
@@ -86,8 +100,57 @@ import qs from "qs"
           }
         })
       },
+      //富文本编辑器的图片上传
+      handleImageAdded(file, Editor, cursorLocation) {
+        // An example of using FormData
+        // NOTE: Your key could be different such as:
+        // formData.append('file', file)
+        var formData = new FormData();//formData对象 （是formData对象传递文件数据）
+        formData.append('roompic', file) //添加一个字段和， 值（图片）
+
+        this.axios({
+          url: 'http://localhost:8000/api/uploadImg',
+          method: 'POST',
+          data: formData
+        })
+        .then((res) => {
+          //富文本编辑器上传图片成功
+
+          // Get url from response
+          let url = "http://localhost:8000"+res.data.imgSrc.replace("public","") 
+          console.log(url)
+          Editor.insertEmbed(cursorLocation, 'image', url); //给文本编辑器里面插入图片
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      },
+
+      //图片列表上传的相关方法
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+      //图片上传成功
+      handleAvatarSuccess(res,file){
+        console.log(res)
+        //保存url
+        this.productData.img_url = "http://localhost:8000"+res.imgSrc.replace("public","")
+        //可能有多个图片，需要把图片存在数组里面
+        this.productData.img_list.push(this.productData.img_url)
+      },
+      //提交商品信息
       submitForm(){
-     
+        console.log(this.productData)
+        //添加商品的数据
+        var params = qs.stringify({...this.productData,start_time: Math.round(new Date().getTime()/1000)})
+        
+        this.axios.post("http://localhost:8000/api/product/add",params).then(res=>{
+          console.log(res.data)
+        })
       },
       resetForm(){
         Object.keys(this.cateData).forEach(key=>{
@@ -97,6 +160,9 @@ import qs from "qs"
     },
     mounted(){
       this.getCateData()
+    },
+    components:{
+      VueEditor
     }
   }
 </script>
