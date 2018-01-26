@@ -110,6 +110,8 @@ import qs from "qs"
         console.log(rowData)
         if(rowData.img_list!="undefined"&&rowData.img_list){
            rowData.img_list =JSON.parse(rowData.img_list)
+        }else {
+          rowData.img_list = []
         }
         this.productData = rowData
         this.index =index
