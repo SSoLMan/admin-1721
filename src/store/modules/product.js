@@ -1,6 +1,6 @@
 import axios from "axios"
 import qs from "qs"
-
+import Vue from "vue"
 export default {
   namespaced:true,
   state:{
@@ -25,7 +25,16 @@ export default {
     changePageNum(state,{currentPage}){
       state.pageNum = currentPage
       console.log(state.pageNum)
+    },
+    editor(state,{index,data}){
+      //vue里面对数组的某些进行修改的时候， this.$set(obj,key,val)
+      //state.listData.splice(index,1,data)
+      Vue.set(state.listData,index,data)
     }
+    // ,
+    // delItem(state,{index}){
+    //   state.listData.splice(index,1)
+    // }
   },
   actions:{
     getListData(context,payload={}){
@@ -45,6 +54,19 @@ export default {
       axios.get(`http://localhost:8000/api/product/getListData?${params}`).then(res=>{
         console.log(res.data)
         context.commit("setListData",res.data)
+      })
+    },
+    del(context,{pid,index,succ,fail}){
+      
+      axios.post("http://localhost:8000/api/product/del",qs.stringify({pid})).then(res=>{
+        console.log(res.data)
+        if(res.data.msgCode==1){
+          //成功
+          context.dispatch("getListData")
+          succ()
+        }else{
+          fail()
+        }
       })
     }
   }

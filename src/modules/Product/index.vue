@@ -78,7 +78,7 @@
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            @click="handleDelete({index:scope.$index,pid:scope.row.pid})">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -95,9 +95,14 @@
       </el-pagination>
 
     </div>
+    
+    <pro-editor ref="editor"></pro-editor>
+    
   </div>
 </template>
 <script>
+  import qs from "qs"
+  import proEditor from "./Editor.vue"
   import {mapActions,mapGetters} from "vuex"
   export default {
     name:"productList",
@@ -125,7 +130,7 @@
     },
     methods:{
       ...mapActions("product",[
-        "getListData"
+        "getListData","del"
       ]),
       currentChange(currentPage){
         console.log(currentPage)
@@ -149,17 +154,44 @@
         //搜索对应的商品  传递参数
         this.getListData({keyword:this.keyword,cate_id:this.cate2})
       },
-      handleEdit(){
-
+      handleEdit(index,rowData){
+        //想让子组件的 弹窗显示
+        this.$refs.editor.show(index,rowData)
       },
-      handleDelete(){
-
+      handleDelete(params){
+        this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          //确认删除，需要先执行异步的action
+          this.del({...params,succ:()=>{
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+          },fail:()=>{
+            this.$message({
+              type: 'error',
+              message: '删除失败!'
+            });
+          }})
+          
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
       }
     },
     mounted(){
       //获取列表数据
       this.getListData()
       this.getCateData()
+    },
+    components:{
+      proEditor
     }
   }
 </script>

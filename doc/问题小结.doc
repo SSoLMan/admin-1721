@@ -113,4 +113,25 @@ watch 监听某个值的 改变
 15、把数据提交给后端 qs axio(method:post)
 
 
+16、删除：
+删除可以给用户一下提示，用户确认以后再进行删除 ，删除成功可以调用回调函数  ，
+再次获取最新数据 context.dispatch("getListData")
+
+17、编辑 弹窗 子组件
+子组件自己管理弹窗， 父组件 调用子组件的show方法 this.$refs.editor.show(index,rowData)
+
+18\图片的列表展示，与上传  
+  根据数据图片计算（computed）生成   fileList =[{name，url}]
+
+19 数据格式 的判断（）
+
+
+20修改成功以后，可以获取最新数据 或者 直接提交mutation修改store的数据
+
+this.$store.commit("product/editor",{index:this.index,data:this.productData})
+
+//mutation
+editor(state,{index,data}){
+  Vue.set(state.listData,index,data)
+}
 
