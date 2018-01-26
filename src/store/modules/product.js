@@ -28,12 +28,21 @@ export default {
     }
   },
   actions:{
-    getListData(context){
+    getListData(context,payload={}){
       console.log(context) 
       const {commit,state} = context;
       const {pageNum,pageSize} = state
+      const {keyword,cate_id} = payload
+
+      //整合参数
+      var params =qs.stringify({
+        cate_id,//分类
+        pageNum, //页码
+        pageSize,
+        keyword//关键字
+      }) 
    
-      axios.get(`http://localhost:8000/api/product/getListData?pageNum=${pageNum}&pageSize=${pageSize}`).then(res=>{
+      axios.get(`http://localhost:8000/api/product/getListData?${params}`).then(res=>{
         console.log(res.data)
         context.commit("setListData",res.data)
       })
