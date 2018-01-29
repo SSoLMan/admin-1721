@@ -29,7 +29,6 @@
                 <el-menu-item index="/cate/add">添加分类</el-menu-item>
                 <el-menu-item index="/cate/list">管理分类</el-menu-item>
             </el-submenu>
-
              <el-submenu index="order">
               <template slot="title">
                 <i class="el-icon-tickets"></i>
@@ -41,6 +40,18 @@
                    <span slot="title">退换货</span>
                 </el-menu-item>
             </el-submenu>
+            <el-submenu index="activity">
+              <template slot="title">
+                <i class="el-icon-tickets"></i>
+                <span>活动管理</span>
+              </template>
+                <el-menu-item index="/activity/recommend">推荐商品</el-menu-item>
+                <el-menu-item index="/activity/hui">优惠特卖</el-menu-item>
+            </el-submenu>
+            <el-menu-item index="/ad">
+              <i class="el-icon-menu"></i>
+              <span slot="title">广告位管理</span>
+            </el-menu-item>
         </el-menu>
      
   </div>

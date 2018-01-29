@@ -49,16 +49,37 @@ export default new Router({
           component:{template:`<router-view></router-view>`},
           children:[
             {
-              path:"list",component:{render(h){return h("div",null,'order add add')}}
+              path:"list",component:()=>import("@/modules/Order/List")
             },
             {
               path:"tui",component:{render(h){return h("div",null,'order tui tui')}}
             }
           ]
          
-        }
+        },
+        
+        {
+          path:"activity",
+          component:{template:`<router-view></router-view>`},
+          children:[
+            {
+              path:"recommend",component:()=>import("@/modules/Activity/Recommend")
+            },
+            {
+              path:"special",component:{render(h){return h("div",null,'order tui tui')}}
+            }
+          ]
+         
+        },
+        {
+          path:"ad",component:()=>import("@/modules/Ad")
+        },
       ]
-    },{
+    },
+    {
+      path:"/login",component:Home
+    },
+    {
       // 路由 路径输入错，去默认的页面（路由重定向）
       path:"*",
       redirect:"/home"

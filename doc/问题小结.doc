@@ -135,3 +135,10 @@ editor(state,{index,data}){
   Vue.set(state.listData,index,data)
 }
 
+
+
+
+
+完善项目
+
+canvas（echarts）、h5离线缓存、移动端事件，vue服务器渲染，vue基本框架原理
