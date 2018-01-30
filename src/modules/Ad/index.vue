@@ -1,7 +1,7 @@
 <template>
   <div>
  <el-table
-    :data="adData"
+    :data="listData"
     style="width: 100%"
     >
     <el-table-column
@@ -34,7 +34,7 @@
       width="60">
       <template slot-scope="scope">
         <el-button
-          @click.native.prevent="deleteRow(scope.$index, tableData4)"
+          @click.native.prevent="deleteRow(scope.$index, scope.row)"
           type="text"
           size="small">
           移除
@@ -64,8 +64,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button @click="addVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addAd">确 定</el-button>
       </div>
   </el-dialog>
 
@@ -73,36 +73,40 @@
 </template>
 
 <script>
+import {mapActions,mapGetters} from "vuex"
 export default {
+  computed:{
+    ...mapGetters("ad",[
+      "listData"
+    ])
+  },
   data(){
     return {
+      formLabelWidth:"120px",
       AD_TYPES:["未知","首页banner","首页楼层"],
       addVisible:false,
       form:{
         title:"",link:"",ad_type:"",img_url:""
-      },
-      adData:[
-        {
-          title:"标题",ad_type:1,
-          link:"https://www.baidu.com/s?rsv_idx=1&wd=%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91&usm=1&ie=utf-8&rsv_cq=element&rsv_dl=0_right_recommends_merge_20826&euri=3ad3768e9ef2410f83541687bde37f7f",
-          img_url:"https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1807044973,2529409740&fm=58"
-        },
-         {
-          title:"标题",ad_type:2,
-          link:"https://www.baidu.com/s?rsv_idx=1&wd=%E7%BB%8F%E5%85%B8%E8%8B%B1%E6%96%87%E6%AD%8C%E6%9B%B2&usm=1&ie=utf-8&rsv_cq=element&rsv_dl=0_right_recommends_merge_20826&euri=adb6facc38924e90b827cd1c828ae8b4",
-          img_url:"https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1184580348,1586936779&fm=58"
-        }
-      ]
+      }
     }
   },
   methods:{
+    ...mapActions("ad",[
+      "add","getListData","del"
+    ]),
     deleteRow(index,rowData){
       //rowData.ad_id 删除
+      this.del({index,ad_id:rowData.ad_id})
     },
-    addAD(){
-
+    addAd(){
+      this.addVisible = false
+      this.add(this.form)
     }
+  },
+  mounted(){
+    this.getListData()
   }
+
 }
 </script>
 

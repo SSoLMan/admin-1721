@@ -136,6 +136,23 @@ editor(state,{index,data}){
 }
 
 
+//鉴权
+router  导航守卫   beforeRouteEnter(to,from,next) (在进入当前页面是，判断是否需要登录)
+                  与服务器端进行token 验证:
+                    通过: next(),
+                    否则：next({path:"/login",query:{ redirect: to.fullPath }})
+给很多页设置 鉴权
+
+router.beforeEach((to, from, next) => { //当进入每一个页面时
+  //如果想去的页面，设置了meta.requiresAuth  需要去鉴权
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    //鉴权
+  }else {
+    next()
+  }
+
+
+
 
 
 
