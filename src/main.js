@@ -6,8 +6,16 @@ import router from './router'
 import ElementUI from 'element-ui'
 import axios from 'axios'
 import store from "./store"
-Vue.use(ElementUI)
+import ECharts from 'vue-echarts/components/ECharts.vue'
 
+// 手动引入 ECharts 各模块来减小打包体积
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/component/tooltip'
+
+// 注册组件后即可使用
+Vue.component('chart', ECharts)
+
+Vue.use(ElementUI)
 Vue.config.productionTip = false
 Vue.prototype.axios = axios
 /* eslint-disable no-new */

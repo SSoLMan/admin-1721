@@ -1,5 +1,6 @@
 import axios from "axios"
 import qs from "qs"
+import {product} from "@/services"
 import Vue from "vue"
 export default {
   namespaced:true,
@@ -7,7 +8,7 @@ export default {
     listData:[],
     count:0,
     pageSize:10,
-    pageNum:1,
+    pageNum:1
   },
   getters:{
     listData:state=>state.listData,
@@ -44,21 +45,22 @@ export default {
       const {keyword,cate_id} = payload
 
       //整合参数
-      var params =qs.stringify({
+      var params ={
         cate_id,//分类
         pageNum, //页码
         pageSize,
         keyword//关键字
-      }) 
-   
-      axios.get(`http://localhost:8000/api/product/getListData?${params}`).then(res=>{
+      }
+      //调用 services 模块的方法 获取数据
+      product.getListData(params).then(res=>{
         console.log(res.data)
         context.commit("setListData",res.data)
       })
     },
     del(context,{pid,index,succ,fail}){
-      
-      axios.post("http://localhost:8000/api/product/del",qs.stringify({pid})).then(res=>{
+       //调用 services 模块的方法 删除数据
+      let params = {pid}
+      product.del(params).then(res=>{
         console.log(res.data)
         if(res.data.msgCode==1){
           //成功
@@ -67,6 +69,11 @@ export default {
         }else{
           fail()
         }
+      })
+    },
+    add(context,payload){
+      product.add(payload).then(res=>{
+        console.log(res.data)
       })
     }
   }

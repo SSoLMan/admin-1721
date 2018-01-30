@@ -136,7 +136,7 @@ editor(state,{index,data}){
 }
 
 
-//鉴权
+21鉴权
 router  导航守卫   beforeRouteEnter(to,from,next) (在进入当前页面是，判断是否需要登录)
                   与服务器端进行token 验证:
                     通过: next(),
@@ -153,6 +153,34 @@ router.beforeEach((to, from, next) => { //当进入每一个页面时
 
 
 
+22 services     关于服务器接口的  配置  ; 数据请的方法和路径
+
+import {cate} from "@/services"
+cate.getCateData(参数).then(res=>{})
+
+
+23 vue-echarts   
+yarn add vue-echarts 
+main.js 导入
+
+import ECharts from 'vue-echarts/components/ECharts.vue'
+// 手动引入 ECharts 各模块（插件）来减小打包体积
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/component/tooltip'
+// 注册组件后即可使用
+Vue.component('chart', ECharts)
+
+
+使用 vue-echarts
+<chart :options="chartData"></chart>
+
+{
+  data(){
+    return {
+      chartData:{} //chartData 什么样的图表提供什么样的数据
+    }
+  }
+}
 
 
 

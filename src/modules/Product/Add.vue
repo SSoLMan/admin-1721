@@ -35,7 +35,7 @@
       <el-form-item>
 
         <el-upload
-          action="http://localhost:8000/api/uploadImg"
+          :action="imgUploadUrl"
           list-type="picture-card"
           name="roompic"
           :on-preview="handlePictureCardPreview"
@@ -67,11 +67,15 @@
 </template>
 
 <script>
+import {imgServerUrl,imgUploadUrl} from "@/services/config"
+import {cate} from "@/services"
 import {VueEditor} from "vue2-editor"
+import {mapActions} from "vuex"
 import qs from "qs"
   export default {
     data(){
       return {
+        imgUploadUrl,imgServerUrl,
         productData:{
           p_name:"",
           price:"",
@@ -89,9 +93,12 @@ import qs from "qs"
       }
     },
     methods:{
+      ...mapActions("product",[
+        "add"
+      ]),
        getCateData(parent_id=0){
-        //获取分类数据
-        this.axios.get("http://localhost:8000/api/cate/getCateData?parent_id="+parent_id).then(res=>{
+        //获取分类数据  cate是 services模块的获取分类数据的模块
+        cate.getCateData({parent_id}).then(res=>{
           if(parent_id){
             //子类的数据
              this.cateChildrenData = res.data
@@ -109,7 +116,7 @@ import qs from "qs"
         formData.append('roompic', file) //添加一个字段和， 值（图片）
 
         this.axios({
-          url: 'http://localhost:8000/api/uploadImg',
+          url:this.imgUploadUrl,
           method: 'POST',
           data: formData
         })
@@ -117,7 +124,7 @@ import qs from "qs"
           //富文本编辑器上传图片成功
 
           // Get url from response
-          let url = "http://localhost:8000"+res.data.imgSrc.replace("public","") 
+          let url = this.imgServerUrl + res.data.imgSrc.replace("public","") 
           console.log(url)
           Editor.insertEmbed(cursorLocation, 'image', url); //给文本编辑器里面插入图片
         })
@@ -138,7 +145,7 @@ import qs from "qs"
       handleAvatarSuccess(res,file){
         console.log(res)
         //保存url
-        this.productData.img_url = "http://localhost:8000"+res.imgSrc.replace("public","")
+        this.productData.img_url = this.imgServerUrl+res.imgSrc.replace("public","")
         //可能有多个图片，需要把图片存在数组里面
         this.productData.img_list.push(this.productData.img_url)
       },
@@ -146,11 +153,9 @@ import qs from "qs"
       submitForm(){
         console.log(this.productData)
         //添加商品的数据
-        var params = qs.stringify({...this.productData,start_time: Math.round(new Date().getTime()/1000)})
-        
-        this.axios.post("http://localhost:8000/api/product/add",params).then(res=>{
-          console.log(res.data)
-        })
+        var params ={...this.productData,start_time: Math.round(new Date().getTime()/1000)}
+        //调用action 方法
+        this.add(params)
       },
       resetForm(){
         Object.keys(this.cateData).forEach(key=>{
