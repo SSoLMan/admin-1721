@@ -165,8 +165,15 @@ main.js 导入
 
 import ECharts from 'vue-echarts/components/ECharts.vue'
 // 手动引入 ECharts 各模块（插件）来减小打包体积
+//需要什么样的图表必须加载对应的依赖//依赖列表：https://github.com/ecomfe/echarts/blob/master/index.js
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
+
+//import 'echarts/lib/chart/line'
+//import 'echarts/lib/chart/pie'
+//import 'echarts/lib/component/title'
+//import "echarts/lib/component/polar"
+
 // 注册组件后即可使用
 Vue.component('chart', ECharts)
 
@@ -182,6 +189,8 @@ Vue.component('chart', ECharts)
   }
 }
 
+图标自适应
+ //<chart style="width:100%" :auto-resize="true"></chart>
 
 
 完善项目
