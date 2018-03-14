@@ -1,0 +1,198 @@
+1、全局组件
+main.js  导入，注册
+2、全局的方法
+main.js 导入 给Vue的原型添加   Vue.prototype.axios = axios
+在组件内部 this.axios
+3、私有样式  <style scoped>
+4、mint-ui
+很多插件需要给外层的容器设置高度[，overflow:auto]
+
+
+//admin
+1、git  github/pull add commit push branch
+
+2、子路由配置 children:[{path:"",component:xxx},{}]
+
+3、路由动画
+<transition name="el-zoom-in-center">
+  <router-view></router-view>
+</transition>
+
+4、el 布局组件使用
+注意：样式不能满足需要可以添加 class
+
+5、header  (el-dropdown) 自定义里面的 内容
+
+
+6、sideMenu  
+default-active： 默认选中的选项 (可以通过路由获取 this.$route.path)
+index：没有菜单选项的表示 （还可以当做路由的路径）
+router:会在激活导航时以 index 作为 path 进行路由跳转 (可以使用 select事件代替)
+
+
+没有子菜单：
+<el-menu-item index="/order_tui">
+    <i class="el-icon-menu"></i>
+    <span slot="title">退换货</span>
+</el-menu-item>
+有子菜单
+<el-submenu index="cate">
+  <template slot="title">
+    <i class="el-icon-document"></i>
+    <span>分类管理</span>
+  </template>
+    <el-menu-item index="/cate_add">添加分类</el-menu-item>
+    <el-menu-item index="/cate_list">管理分类</el-menu-item>
+</el-submenu>
+
+7、路由的编程式导航
+this.$router.push("/home")
+this.$router.push({ path: "/home", query: { plan: 'private' }}) //,params:{} params是路由传参（detail:/id）
+
+
+8、多级路由 需要使用 router-view嵌套
+
+9、组件的异步加载   import Product from "xxx"   变成   ()=>import("xxx")  可以webpack文件打包过大的问题
+
+10、el-form相关组件 
+以及el-upload    
+action : 图片上传的地址 
+name: 上传图片的字段名
+:on-success="handleAvatarSuccess" 上传成功回调 
+
+handleAvatarSuccess(res, file) {
+    console.log(res,file,)
+    //图片上传成功，保存图片的服务器地址
+    this.cateData.catePic = "http://localhost:8000"+res.imgSrc.replace("public","")
+}, 
+
+11、el-table,el-pagination 分页
+分页插件
+:page-count="totalPage" //总页数
+@current-change="currentChange" //点击按钮，上一页，下一页，改变页面时触发 
+currentChange（currentPage）{
+   this.$store.commit("product/changePageNum",{currentPage}) //先提交 修改页码的请求
+   
+   this.getListData() //修改完页码再获取数据（不用关注页码的问题）
+}
+
+12、分类，关键字搜索  （一级，二级分类联动效果 <=>省市区三联动）
+el-select 
+@change="fn"   : fn(value) //当选中值发生改变的时候出发
+watch 监听某个值的 改变
+
+13、多图上传 （上传成功，保存图片地址）
+
+14富文本编辑器 vue2-editor
+
+自定义图片上传
+ handleImageAdded(file, Editor, cursorLocation) {
+        // An example of using FormData
+        // NOTE: Your key could be different such as:
+        // formData.append('file', file)
+        var formData = new FormData();//formData对象 （是formData对象传递文件数据）
+        formData.append('roompic', file) //添加一个字段和， 值（图片）
+
+        this.axios({
+          url: 'http://localhost:8000/api/uploadImg',
+          method: 'POST',
+          data: formData
+        })
+        .then((res) => {
+          //富文本编辑器上传图片成功
+
+          // Get url from response
+          let url = "http://localhost:8000"+res.data.imgSrc.replace("public","") 
+          console.log(url)
+          Editor.insertEmbed(cursorLocation, 'image', url); //给文本编辑器里面插入图片
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      }
+15、把数据提交给后端 qs axio(method:post)
+
+
+16、删除：
+删除可以给用户一下提示，用户确认以后再进行删除 ，删除成功可以调用回调函数  ，
+再次获取最新数据 context.dispatch("getListData")
+
+17、编辑 弹窗 子组件
+子组件自己管理弹窗， 父组件 调用子组件的show方法 this.$refs.editor.show(index,rowData)
+
+18\图片的列表展示，与上传  
+  根据数据图片计算（computed）生成   fileList =[{name，url}]
+
+19 数据格式 的判断（）
+
+
+20修改成功以后，可以获取最新数据 或者 直接提交mutation修改store的数据
+
+this.$store.commit("product/editor",{index:this.index,data:this.productData})
+
+//mutation
+editor(state,{index,data}){
+  Vue.set(state.listData,index,data)
+}
+
+
+21鉴权
+router  导航守卫   beforeRouteEnter(to,from,next) (在进入当前页面是，判断是否需要登录)
+                  与服务器端进行token 验证:
+                    通过: next(),
+                    否则：next({path:"/login",query:{ redirect: to.fullPath }})
+给很多页设置 鉴权
+
+router.beforeEach((to, from, next) => { //当进入每一个页面时
+  //如果想去的页面，设置了meta.requiresAuth  需要去鉴权
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    //鉴权
+  }else {
+    next()
+  }
+
+
+
+22 services     关于服务器接口的  配置  ; 数据请的方法和路径
+
+import {cate} from "@/services"
+cate.getCateData(参数).then(res=>{})
+
+
+23 vue-echarts   
+yarn add vue-echarts 
+main.js 导入
+
+import ECharts from 'vue-echarts/components/ECharts.vue'
+// 手动引入 ECharts 各模块（插件）来减小打包体积
+//需要什么样的图表必须加载对应的依赖//依赖列表：https://github.com/ecomfe/echarts/blob/master/index.js
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/component/tooltip'
+
+//import 'echarts/lib/chart/line'
+//import 'echarts/lib/chart/pie'
+//import 'echarts/lib/component/title'
+//import "echarts/lib/component/polar"
+
+// 注册组件后即可使用
+Vue.component('chart', ECharts)
+
+
+使用 vue-echarts
+<chart :options="chartData"></chart>
+
+{
+  data(){
+    return {
+      chartData:{} //chartData 什么样的图表提供什么样的数据
+    }
+  }
+}
+
+图标自适应
+ //<chart style="width:100%" :auto-resize="true"></chart>
+
+
+完善项目
+
+canvas（echarts）、h5离线缓存、移动端事件，vue服务器渲染，vue基本框架原理

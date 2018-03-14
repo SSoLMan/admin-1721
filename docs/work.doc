@@ -3,6 +3,7 @@
 分工
 ...
 规范
+
 技术解决方案
 vue+mint-ui+vue-router+vuex 实现前端应用
 vue+element-ui+vuex+router+echarts 实现后端管理系统
@@ -10,6 +11,8 @@ node+mysql/mongo 实现后端功能/接口，数据库
 
 数据交互
 axios ,qs [, jsonp(self)][,后端]
+接口规范 
+restful
 
 js代码规范
 [eslint]
@@ -21,7 +24,7 @@ js代码规范
 scss css  (样式模块化)
 样式命名 使用”—“ 连接单词
 
-组件命名规范
+组件布局/命名规范 （BEM）
 lh-xxx-xxx    (lhProductDetail =>lh-product-detail)
 
 文件目录结构和项目框架
@@ -45,7 +48,6 @@ vue-cli
 
 代码管理工具  
 git/svn   托管:github/马云/coding/gitlab/self-server
-
 
 
 
